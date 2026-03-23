@@ -3,86 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Điều Hành Thành Viễn</title>
+    <title>Thành Viễn - Quản Lý Lịch</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        /* Hiệu ứng cho Task đã xong */
+        .task-done { background-color: #f0fdf4 !important; border: 1px solid #bbf7d0 !important; }
+        .task-done h4 { color: #166534; text-decoration: line-through; opacity: 0.6; }
     </style>
 </head>
-<body class="bg-slate-100 pb-10">
+<body class="pb-10">
 
-    <header class="bg-blue-700 text-white p-4 shadow-md sticky top-0 z-50">
-        <h1 class="text-lg font-bold text-center uppercase tracking-wide">Điều Hành Thành Viễn</h1>
+    <header class="bg-blue-800 text-white p-3 mb-4 shadow-sm sticky top-0 z-50">
+        <div class="max-w-full px-4 flex justify-between items-center">
+            <h1 class="font-bold uppercase text-sm tracking-widest">ĐIỀU HÀNH THÀNH VIỄN</h1>
+            <div id="current-time" class="text-[10px] font-mono opacity-70"></div>
+        </div>
     </header>
 
-    <main class="max-w-6xl mx-auto p-4 space-y-6">
+    <main class="max-w-full px-4">
         
-        <section class="max-w-2xl mx-auto bg-white rounded-2xl shadow-sm p-6 border border-slate-200">
-            <h2 class="text-blue-700 font-bold mb-5 flex items-center gap-2 uppercase text-sm">
-                <i class="fas fa-calendar-check"></i> Nhập Lịch Làm Việc
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Tên Khách Hàng</label>
-                    <input type="text" id="inpTen" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+        <section class="bg-white rounded-xl shadow-sm p-4 mb-6 border border-slate-200">
+            <div class="flex flex-wrap md:flex-nowrap gap-3 items-end">
+                <div class="flex-1 min-w-[200px]">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Khách hàng & SĐT</label>
+                    <div class="flex gap-1">
+                        <input type="text" id="inpTen" placeholder="Tên khách" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
+                        <input type="tel" id="inpSdt" placeholder="SĐT" class="w-2/5 p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
+                    </div>
                 </div>
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Số Điện Thoại</label>
-                    <input type="tel" id="inpSdt" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="flex-[1.5] min-w-[250px]">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Địa chỉ</label>
+                    <input type="text" id="inpDiaChi" placeholder="Địa chỉ chi tiết" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
                 </div>
-                <div class="md:col-span-2">
-                    <label class="block font-bold text-slate-600 mb-1">Địa Chỉ</label>
-                    <input type="text" id="inpDiaChi" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Người Phụ Trách</label>
-                    <select id="inpTho" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="w-32">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Thợ</label>
+                    <select id="inpTho" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer">
                         <option value="Thành Viễn">Thành Viễn</option>
                         <option value="Thợ 1">Thợ 1</option>
                         <option value="Thợ 2">Thợ 2</option>
                     </select>
                 </div>
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Công Việc</label>
-                    <select id="inpDichVu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="Vệ sinh máy lạnh">Vệ sinh máy lạnh</option>
-                        <option value="Sửa máy lạnh">Sửa máy lạnh</option>
-                        <option value="Lắp đặt camera">Lắp đặt camera</option>
-                        <option value="Sửa máy giặt">Sửa máy giặt</option>
+                <div class="w-40">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Công việc</label>
+                    <select id="inpDichVu" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer">
+                        <option value="Vệ sinh máy lạnh">Vệ sinh</option>
+                        <option value="Sửa máy lạnh">Sửa máy</option>
+                        <option value="Lắp đặt">Lắp đặt</option>
                     </select>
                 </div>
-                <div class="md:col-span-2">
-                    <label class="block font-bold text-slate-600 mb-1">Ngày Tháng</label>
-                    <input type="date" id="inpNgay" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="w-36">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Ngày hẹn</label>
+                    <input type="date" id="inpNgay" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
                 </div>
-                <button id="btnSave" class="md:col-span-2 w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg active:scale-95 transition-all uppercase tracking-wider">
-                    Lên Lịch Ngay
-                </button>
+                <div class="w-full md:w-auto">
+                    <button id="btnSave" class="w-full md:w-32 bg-blue-700 hover:bg-blue-800 text-white p-2 rounded font-bold text-sm transition-all uppercase shadow-md shadow-blue-100">
+                        Lưu Lịch
+                    </button>
+                </div>
             </div>
         </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="p-3 bg-blue-600 text-white font-bold text-xs uppercase flex justify-between">
-                    <span>Hôm Nay</span> <span id="count-today">0</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="space-y-3">
+                <div class="bg-blue-600 p-2 rounded-t-lg flex justify-between items-center shadow-sm">
+                    <span class="text-white font-bold text-[11px] uppercase tracking-tighter">Hôm nay</span>
+                    <span id="count-today" class="bg-white text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
                 </div>
-                <div id="group-today" class="p-2 grid grid-cols-2 md:grid-cols-1 gap-2"></div>
+                <div id="group-today" class="grid grid-cols-2 md:grid-cols-1 gap-2"></div>
             </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="p-3 bg-slate-700 text-white font-bold text-xs uppercase flex justify-between">
-                    <span>Ngày Mai</span> <span id="count-tomorrow">0</span>
+            <div class="space-y-3">
+                <div class="bg-slate-700 p-2 rounded-t-lg flex justify-between items-center shadow-sm">
+                    <span class="text-white font-bold text-[11px] uppercase tracking-tighter">Ngày mai</span>
+                    <span id="count-tomorrow" class="bg-white text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
                 </div>
-                <div id="group-tomorrow" class="p-2 grid grid-cols-2 md:grid-cols-1 gap-2 border-t"></div>
+                <div id="group-tomorrow" class="grid grid-cols-2 md:grid-cols-1 gap-2"></div>
             </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="p-3 bg-slate-500 text-white font-bold text-xs uppercase flex justify-between">
-                    <span>Sắp Tới</span> <span id="count-future">0</span>
+            <div class="space-y-3">
+                <div class="bg-slate-500 p-2 rounded-t-lg flex justify-between items-center shadow-sm">
+                    <span class="text-white font-bold text-[11px] uppercase tracking-tighter">Sắp tới</span>
+                    <span id="count-future" class="bg-white text-slate-500 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
                 </div>
-                <div id="group-future" class="p-2 grid grid-cols-2 md:grid-cols-1 gap-2 border-t"></div>
+                <div id="group-future" class="grid grid-cols-2 md:grid-cols-1 gap-2"></div>
             </div>
         </div>
     </main>
