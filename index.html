@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thành Viễn - Nhập Lịch Nhanh</title>
+    <title>Thành Viễn - Điều Hành Đa Nền Tảng</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -15,12 +15,12 @@
 <body class="bg-slate-100 pb-10">
 
     <header class="bg-blue-700 text-white p-4 shadow-md sticky top-0 z-50">
-        <h1 class="text-lg font-bold text-center uppercase tracking-wide">Trạm Điều Hành Thành Viễn</h1>
+        <h1 class="text-lg font-bold text-center uppercase tracking-wide">Hệ Thống Thành Viễn</h1>
     </header>
 
-    <main class="max-w-md mx-auto p-4 space-y-6">
+    <main class="max-w-6xl mx-auto p-4 space-y-6">
         
-        <section class="bg-white rounded-2xl shadow-sm p-5 border border-slate-200">
+        <section class="max-w-xl mx-auto bg-white rounded-2xl shadow-sm p-5 border border-slate-200">
             <h2 class="text-blue-700 font-bold mb-4 flex items-center gap-2">
                 <i class="fas fa-edit"></i> NHẬP LỊCH MỚI
             </h2>
@@ -39,59 +39,54 @@
                         <input type="date" id="inpNgay" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                 </div>
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Dịch vụ</label>
-                    <select id="inpDichVu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-                        <option value="Vệ sinh máy lạnh">Vệ sinh máy lạnh</option>
-                        <option value="Sửa máy lạnh">Sửa máy lạnh</option>
-                        <option value="Lắp đặt camera">Lắp đặt camera</option>
-                        <option value="Sửa máy giặt">Sửa máy giặt</option>
-                    </select>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-600 mb-1">Dịch vụ</label>
+                        <select id="inpDichVu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option value="Vệ sinh máy lạnh">Vệ sinh máy lạnh</option>
+                            <option value="Sửa máy lạnh">Sửa máy lạnh</option>
+                            <option value="Lắp đặt camera">Lắp đặt camera</option>
+                            <option value="Sửa máy giặt">Sửa máy giặt</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-600 mb-1">Địa chỉ</label>
+                        <input type="text" id="inpDiaChi" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
                 </div>
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Địa chỉ</label>
-                    <input type="text" id="inpDiaChi" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Ghi chú</label>
-                    <textarea id="inpGhiChu" rows="1" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
-                </div>
-                <button id="btnSave" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-blue-100 active:scale-95 transition-all mt-2">
-                    LƯU VÀO LỊCH
+                <button id="btnSave" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg active:scale-95 transition-all mt-2 uppercase">
+                    Lưu và hiển thị lịch
                 </button>
             </div>
         </section>
 
-        <hr class="border-slate-300">
-
-        <section class="space-y-3">
-            <h2 class="text-slate-800 font-bold px-1">XEM LỊCH TRÌNH</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
             
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <button onclick="toggleGroup('group-today')" class="w-full p-4 flex justify-between items-center bg-blue-50">
-                    <span class="font-bold text-blue-700 uppercase text-sm">Hôm Nay</span>
-                    <span id="count-today" class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
-                </button>
-                <div id="group-today" class="p-2 space-y-2"></div>
+                <div class="p-4 flex justify-between items-center bg-blue-600 text-white">
+                    <span class="font-bold uppercase text-sm">Hôm Nay</span>
+                    <span id="count-today" class="bg-white text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <div id="group-today" class="p-2 grid grid-cols-2 md:grid-cols-1 gap-2"></div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <button onclick="toggleGroup('group-tomorrow')" class="w-full p-4 flex justify-between items-center">
-                    <span class="font-bold text-slate-600 uppercase text-sm">Ngày Mai</span>
-                    <span id="count-tomorrow" class="bg-slate-400 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
-                </button>
-                <div id="group-tomorrow" class="hidden p-2 space-y-2 border-t"></div>
+                <div class="p-4 flex justify-between items-center bg-slate-700 text-white">
+                    <span class="font-bold uppercase text-sm">Ngày Mai</span>
+                    <span id="count-tomorrow" class="bg-white text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <div id="group-tomorrow" class="p-2 grid grid-cols-2 md:grid-cols-1 gap-2"></div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <button onclick="toggleGroup('group-future')" class="w-full p-4 flex justify-between items-center">
-                    <span class="font-bold text-slate-600 uppercase text-sm">Sắp Tới</span>
-                    <span id="count-future" class="bg-slate-400 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
-                </button>
-                <div id="group-future" class="hidden p-2 space-y-2 border-t"></div>
+                <div class="p-4 flex justify-between items-center bg-slate-500 text-white">
+                    <span class="font-bold uppercase text-sm">Sắp Tới</span>
+                    <span id="count-future" class="bg-white text-slate-500 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <div id="group-future" class="p-2 grid grid-cols-2 md:grid-cols-1 gap-2"></div>
             </div>
-        </section>
 
+        </div>
     </main>
 
     <script type="module" src="./app.js"></script>
