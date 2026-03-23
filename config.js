@@ -1,6 +1,6 @@
-// config.js
+// config.js hoàn chỉnh cho Điện Lạnh Thành Viễn
 export const CONFIG = {
-https://vkduoktamuqtevplkrax.supabase.co
-sb_publishable_NyP3F3ue8fBoShPfq1ADlA_JFGtZnlK
-TABLE_NAME: "DATA-KHACH-HANG"
+    SUPABASE_URL: "https://vkduoktamuqtevplkrax.supabase.co",
+    SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", // Lưu ý: Xem hướng dẫn bên dưới
+    TABLE_NAME: "DATA-KHACH-HANG"
 };
