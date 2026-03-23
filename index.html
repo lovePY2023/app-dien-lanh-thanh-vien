@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thành Viễn Admin - All-in-One</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 pb-24">
+
+    <header class="bg-blue-700 text-white p-4 shadow-lg sticky top-0 z-40">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold tracking-tight">THÀNH VIỄN</h1>
+                <p class="text-xs opacity-80">Quản lý công việc & CRM</p>
+            </div>
+            <button id="btnRefresh" class="p-2 hover:bg-blue-600 rounded-full transition">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto p-4">
+        <button id="btnOpenForm" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold mb-6 shadow-blue-200 shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95">
+            <i class="fas fa-plus-circle"></i> THÊM KHÁCH HÀNG MỚI
+        </button>
+
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="font-bold text-slate-700 text-lg">Danh sách gần đây</h2>
+            <span id="jobCount" class="bg-slate-200 text-slate-600 text-xs px-2 py-1 rounded-full font-bold">0 đơn</span>
+        </div>
+
+        <div id="list-container" class="space-y-4">
+            <div class="text-center py-10">
+                <i class="fas fa-circle-notch animate-spin text-blue-500 text-2xl"></i>
+                <p class="text-slate-400 mt-2 text-sm">Đang kết nối dữ liệu...</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="form-container" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden animate-slide-up">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-slate-800">Thông tin khách hàng</h2>
+                    <button id="btnClose" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times text-xl"></i></button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Tên khách hàng</label>
+                        <input type="text" id="inpTen" class="w-full p-3 bg-slate-100 border-none rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Ví dụ: Anh Thành">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Số điện thoại</label>
+                            <input type="tel" id="inpSdt" class="w-full p-3 bg-slate-100 border-none rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="090...">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Dịch vụ</label>
+                            <select id="inpDichVu" class="w-full p-3 bg-slate-100 border-none rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                                <option value="Vệ sinh máy lạnh">Vệ sinh máy lạnh</option>
+                                <option value="Sửa máy lạnh">Sửa máy lạnh</option>
+                                <option value="Lắp đặt camera">Lắp đặt camera</option>
+                                <option value="Sửa máy giặt">Sửa máy giặt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Địa chỉ</label>
+                        <input type="text" id="inpDiaChi" class="w-full p-3 bg-slate-100 border-none rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Số nhà, tên đường, Gò Vấp...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Ghi chú công việc</label>
+                        <textarea id="inpGhiChu" rows="3" class="w-full p-3 bg-slate-100 border-none rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Tình trạng máy, vật tư thay thế..."></textarea>
+                    </div>
+
+                    <button id="btnSave" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-blue-100 mt-2 active:scale-95 transition-all">LƯU THÔNG TIN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
