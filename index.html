@@ -3,75 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thành Viễn - Lịch Làm Việc</title>
+    <title>Thành Viễn - Nhập Lịch Nhanh</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        .group-content { transition: max-height 0.3s ease-out; overflow: hidden; }
         .hidden { display: none; }
     </style>
 </head>
-<body class="bg-slate-50 pb-24">
+<body class="bg-slate-100 pb-10">
 
-    <header class="bg-blue-700 text-white p-4 shadow-lg sticky top-0 z-40">
-        <div class="max-w-md mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-tight text-center w-full uppercase">Lịch Làm Việc Thành Viễn</h1>
-        </div>
+    <header class="bg-blue-700 text-white p-4 shadow-md sticky top-0 z-50">
+        <h1 class="text-lg font-bold text-center uppercase tracking-wide">Trạm Điều Hành Thành Viễn</h1>
     </header>
 
-    <main class="max-w-md mx-auto p-4">
-        <button id="btnOpenForm" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold mb-6 shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all">
-            <i class="fas fa-calendar-plus"></i> LÊN LỊCH LÀM VIỆC
-        </button>
-
-        <div class="space-y-3" id="schedule-groups">
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <button onclick="toggleGroup('group-today')" class="w-full p-4 flex justify-between items-center bg-blue-50">
-                    <span class="font-bold text-blue-700"><i class="fas fa-star mr-2"></i>HÔM NAY</span>
-                    <span id="count-today" class="bg-blue-200 text-blue-700 text-xs px-2 py-1 rounded-md font-bold">0</span>
-                </button>
-                <div id="group-today" class="p-2 space-y-2"></div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <button onclick="toggleGroup('group-tomorrow')" class="w-full p-4 flex justify-between items-center">
-                    <span class="font-bold text-slate-700"><i class="fas fa-calendar-day mr-2"></i>NGÀY MAI</span>
-                    <span id="count-tomorrow" class="bg-slate-200 text-slate-600 text-xs px-2 py-1 rounded-md font-bold">0</span>
-                </button>
-                <div id="group-tomorrow" class="hidden p-2 space-y-2 border-t border-slate-100"></div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <button onclick="toggleGroup('group-future')" class="w-full p-4 flex justify-between items-center">
-                    <span class="font-bold text-slate-700"><i class="fas fa-clock mr-2"></i>LỊCH SẮP TỚI</span>
-                    <span id="count-future" class="bg-slate-200 text-slate-600 text-xs px-2 py-1 rounded-md font-bold">0</span>
-                </button>
-                <div id="group-future" class="hidden p-2 space-y-2 border-t border-slate-100"></div>
-            </div>
-        </div>
-    </main>
-
-    <div id="form-container" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
-        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl shadow-2xl p-6 overflow-y-auto max-h-[90vh]">
-            <div class="flex justify-between items-center mb-6 border-b pb-2">
-                <h2 class="text-xl font-bold text-slate-800">Thông tin lịch hẹn</h2>
-                <button id="btnClose" class="text-slate-400 p-2"><i class="fas fa-times text-xl"></i></button>
-            </div>
-            
-            <div class="space-y-4 text-sm">
+    <main class="max-w-md mx-auto p-4 space-y-6">
+        
+        <section class="bg-white rounded-2xl shadow-sm p-5 border border-slate-200">
+            <h2 class="text-blue-700 font-bold mb-4 flex items-center gap-2">
+                <i class="fas fa-edit"></i> NHẬP LỊCH MỚI
+            </h2>
+            <div class="grid grid-cols-1 gap-4 text-sm">
                 <div>
                     <label class="block font-bold text-slate-600 mb-1">Tên khách hàng</label>
                     <input type="text" id="inpTen" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Số điện thoại</label>
-                    <input type="tel" id="inpSdt" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Ngày hẹn làm việc</label>
-                    <input type="date" id="inpNgay" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-600 mb-1">Số điện thoại</label>
+                        <input type="tel" id="inpSdt" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-600 mb-1">Ngày làm</label>
+                        <input type="date" id="inpNgay" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
                 </div>
                 <div>
                     <label class="block font-bold text-slate-600 mb-1">Dịch vụ</label>
@@ -88,13 +54,45 @@
                 </div>
                 <div>
                     <label class="block font-bold text-slate-600 mb-1">Ghi chú</label>
-                    <textarea id="inpGhiChu" rows="2" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                    <textarea id="inpGhiChu" rows="1" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
                 </div>
-
-                <button id="btnSave" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg active:scale-95 transition-all">XÁC NHẬN LÊN LỊCH</button>
+                <button id="btnSave" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-blue-100 active:scale-95 transition-all mt-2">
+                    LƯU VÀO LỊCH
+                </button>
             </div>
-        </div>
-    </div>
+        </section>
+
+        <hr class="border-slate-300">
+
+        <section class="space-y-3">
+            <h2 class="text-slate-800 font-bold px-1">XEM LỊCH TRÌNH</h2>
+            
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <button onclick="toggleGroup('group-today')" class="w-full p-4 flex justify-between items-center bg-blue-50">
+                    <span class="font-bold text-blue-700 uppercase text-sm">Hôm Nay</span>
+                    <span id="count-today" class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                </button>
+                <div id="group-today" class="p-2 space-y-2"></div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <button onclick="toggleGroup('group-tomorrow')" class="w-full p-4 flex justify-between items-center">
+                    <span class="font-bold text-slate-600 uppercase text-sm">Ngày Mai</span>
+                    <span id="count-tomorrow" class="bg-slate-400 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                </button>
+                <div id="group-tomorrow" class="hidden p-2 space-y-2 border-t"></div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <button onclick="toggleGroup('group-future')" class="w-full p-4 flex justify-between items-center">
+                    <span class="font-bold text-slate-600 uppercase text-sm">Sắp Tới</span>
+                    <span id="count-future" class="bg-slate-400 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                </button>
+                <div id="group-future" class="hidden p-2 space-y-2 border-t"></div>
+            </div>
+        </section>
+
+    </main>
 
     <script type="module" src="./app.js"></script>
 </body>
