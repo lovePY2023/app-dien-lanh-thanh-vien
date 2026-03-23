@@ -44,20 +44,25 @@ async function loadData() {
 }
 
 function renderCard(item) {
+    const d = new Date(item.ngay_thuc_hien);
+    const dateShow = `${d.getDate()}/${d.getMonth() + 1}`;
+
     return `
-    <div class="bg-white p-3 rounded-lg border border-slate-100 shadow-sm flex justify-between items-center gap-2">
-        <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2">
-                <h4 class="font-bold text-slate-800 truncate text-sm">${item.ten_khach}</h4>
-                <span class="text-[9px] font-bold text-blue-500 uppercase">${item.loai_dich_vu}</span>
+    <div class="bg-slate-50 p-2 rounded-lg border border-slate-200 shadow-sm flex flex-col justify-between h-full">
+        <div class="mb-2">
+            <div class="flex justify-between items-start gap-1">
+                <h4 class="font-bold text-slate-800 text-[13px] leading-tight truncate">${item.ten_khach}</h4>
+                <span class="text-[8px] font-bold text-blue-500 bg-white px-1 border border-blue-100 rounded uppercase whitespace-nowrap">${item.loai_dich_vu.split(' ')[0]}</span>
             </div>
-            <p class="text-[11px] text-slate-500 truncate">${item.dia_chi || '...'}</p>
+            <p class="text-[10px] text-slate-500 truncate mt-1">${item.dia_chi || '...'}</p>
+            <p class="text-[9px] text-slate-400 italic">${dateShow}</p>
         </div>
-        <div class="flex gap-1">
-            <a href="tel:${item.so_dien_thoai}" class="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xs">
+        
+        <div class="flex gap-1 border-t pt-2">
+            <a href="tel:${item.so_dien_thoai}" class="flex-1 bg-emerald-500 text-white py-2 rounded-md flex items-center justify-center text-[10px]">
                 <i class="fas fa-phone"></i>
             </a>
-            <button onclick="window.finishJob('${item.id}')" class="w-8 h-8 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center text-xs">
+            <button onclick="window.finishJob('${item.id}')" class="flex-1 bg-slate-200 text-slate-600 py-2 rounded-md flex items-center justify-center text-[10px]">
                 <i class="fas fa-check"></i>
             </button>
         </div>
