@@ -3,22 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Thành Viễn CRM</title>
+    <title>Điều Hành Thành Viễn - CRM v2.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
-        /* Style cho Task đã hoàn thành */
-        .task-done { background-color: #ecfdf5 !important; border: 1px solid #6ee7b7 !important; opacity: 0.9; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f1f5f9; 
+        }
+        /* Hiệu ứng cho Task đã hoàn thành: Xanh lá nhạt */
+        .task-done { 
+            background-color: #ecfdf5 !important; 
+            border: 1px solid #6ee7b7 !important; 
+            box-shadow: none !important;
+        }
+        /* Hiệu ứng gạch chân tên khách khi xong việc */
+        .task-done h4 { 
+            text-decoration: line-through; 
+            color: #059669; 
+        }
+        /* Tối ưu thanh cuộn */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body class="pb-10">
 
     <header class="bg-blue-900 text-white p-3 shadow-md sticky top-0 z-50">
         <div class="max-w-full px-4 flex justify-between items-center">
-            <h1 class="font-bold uppercase text-xs tracking-widest">ĐIỀU HÀNH THÀNH VIỄN</h1>
-            <div id="clock" class="text-[10px] font-mono"></div>
+            <div class="flex items-center gap-2">
+                <i class="fas fa-snowflake animate-spin-slow text-blue-300"></i>
+                <h1 class="font-bold uppercase text-xs tracking-widest">Hệ Thống Thành Viễn</h1>
+            </div>
+            <div id="clock" class="text-[10px] font-mono bg-blue-800 px-3 py-1 rounded-full border border-blue-700"></div>
         </div>
     </header>
 
@@ -27,63 +45,84 @@
         <section class="bg-white rounded-xl shadow-md p-4 mb-6 border border-slate-200">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
                 
-                <div class="lg:col-span-6 grid grid-cols-1 md:grid-cols-4 gap-2 border-r-0 lg:border-r border-slate-200 pr-0 lg:pr-4">
-                    <h3 class="md:col-span-4 text-[10px] font-bold text-blue-600 uppercase mb-1">1. Thông tin khách hàng</h3>
-                    <input type="text" id="inpTen" placeholder="Tên khách" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
-                    <input type="tel" id="inpSdt" placeholder="Số điện thoại" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
-                    <input type="text" id="inpDiaChi" placeholder="Địa chỉ chi tiết" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
-                    <select id="inpKhuVuc" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
+                <div class="lg:col-span-6 grid grid-cols-1 md:grid-cols-4 gap-2 border-r-0 lg:border-r border-slate-100 pr-0 lg:pr-4">
+                    <h3 class="md:col-span-4 text-[10px] font-bold text-blue-600 uppercase mb-1 flex items-center gap-2">
+                        <i class="fas fa-user-circle"></i> 1. Thông tin khách hàng
+                    </h3>
+                    <input type="text" id="inpTen" placeholder="Tên khách hàng" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                    <input type="tel" id="inpSdt" placeholder="Số điện thoại" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                    <input type="text" id="inpDiaChi" placeholder="Số nhà, tên đường..." class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                    <select id="inpKhuVuc" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer hover:bg-slate-100 transition-all">
                         <option value="Gò Vấp">Gò Vấp</option>
                         <option value="Quận 12">Quận 12</option>
                         <option value="Tân Bình">Tân Bình</option>
                         <option value="Phú Nhuận">Phú Nhuận</option>
+                        <option value="Hóc Môn">Hóc Môn</option>
                         <option value="Khác">Khu vực khác</option>
                     </select>
                 </div>
 
                 <div class="lg:col-span-6 grid grid-cols-1 md:grid-cols-5 gap-2">
-                    <h3 class="md:col-span-5 text-[10px] font-bold text-orange-600 uppercase mb-1">2. Chi tiết công việc</h3>
-                    <select id="inpDichVu" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
+                    <h3 class="md:col-span-5 text-[10px] font-bold text-orange-600 uppercase mb-1 flex items-center gap-2">
+                        <i class="fas fa-tools"></i> 2. Chi tiết công việc
+                    </h3>
+                    <select id="inpDichVu" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer hover:bg-slate-100 transition-all">
                         <option value="Vệ sinh máy lạnh">Vệ sinh</option>
                         <option value="Sửa máy lạnh">Sửa chữa</option>
-                        <option value="Lắp đặt">Lắp đặt</option>
+                        <option value="Lắp đặt máy">Lắp đặt</option>
                         <option value="Sửa máy giặt">Máy giặt</option>
+                        <option value="Sửa tủ lạnh">Tủ lạnh</option>
                     </select>
-                    <select id="inpTho" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
+                    <select id="inpTho" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer hover:bg-slate-100 transition-all">
                         <option value="Thành Viễn">Thành Viễn</option>
                         <option value="Thợ 1">Thợ 1</option>
                         <option value="Thợ 2">Thợ 2</option>
                     </select>
-                    <input type="date" id="inpNgay" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
-                    <input type="text" id="inpGhiChu" placeholder="Ghi chú thêm..." class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
-                    <button id="btnSave" class="bg-blue-700 hover:bg-blue-800 text-white p-2 rounded font-bold text-sm uppercase transition-all shadow-lg">Lưu</button>
+                    <input type="date" id="inpNgay" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer transition-all">
+                    <input type="text" id="inpGhiChu" placeholder="Ghi chú máy móc..." class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                    <button id="btnSave" class="bg-blue-700 hover:bg-blue-800 text-white p-2 rounded font-bold text-sm uppercase transition-all shadow-lg active:scale-95">
+                        <i class="fas fa-save mr-1"></i> Lưu Task
+                    </button>
                 </div>
+
             </div>
         </section>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="space-y-2">
-                <div class="bg-blue-600 p-2 text-white text-[11px] font-bold uppercase rounded-t-lg flex justify-between">
-                    <span>Hôm nay</span> <span id="count-today">0</span>
+            
+            <div class="space-y-3">
+                <div class="bg-blue-600 p-2.5 text-white text-[11px] font-bold uppercase rounded-t-xl flex justify-between items-center shadow-md">
+                    <span id="title-today"><i class="fas fa-star mr-1"></i> Hôm nay</span>
+                    <span id="count-today" class="bg-white text-blue-600 px-2 py-0.5 rounded-full text-[10px]">0</span>
                 </div>
-                <div id="group-today" class="grid grid-cols-2 md:grid-cols-1 gap-2"></div>
+                <div id="group-today" class="grid grid-cols-2 md:grid-cols-1 gap-2">
+                    </div>
             </div>
 
-            <div class="space-y-2">
-                <div class="bg-slate-700 p-2 text-white text-[11px] font-bold uppercase rounded-t-lg flex justify-between">
-                    <span>Ngày mai</span> <span id="count-tomorrow">0</span>
+            <div class="space-y-3">
+                <div class="bg-slate-700 p-2.5 text-white text-[11px] font-bold uppercase rounded-t-xl flex justify-between items-center shadow-md">
+                    <span id="title-tomorrow"><i class="fas fa-calendar-day mr-1"></i> Ngày mai</span>
+                    <span id="count-tomorrow" class="bg-white text-slate-700 px-2 py-0.5 rounded-full text-[10px]">0</span>
                 </div>
-                <div id="group-tomorrow" class="grid grid-cols-2 md:grid-cols-1 gap-2"></div>
+                <div id="group-tomorrow" class="grid grid-cols-2 md:grid-cols-1 gap-2">
+                    </div>
             </div>
 
-            <div class="space-y-2">
-                <div class="bg-slate-500 p-2 text-white text-[11px] font-bold uppercase rounded-t-lg flex justify-between">
-                    <span>Sắp tới</span> <span id="count-future">0</span>
+            <div class="space-y-3">
+                <div class="bg-slate-500 p-2.5 text-white text-[11px] font-bold uppercase rounded-t-xl flex justify-between items-center shadow-md">
+                    <span id="title-future"><i class="fas fa-calendar-alt mr-1"></i> Sắp tới</span>
+                    <span id="count-future" class="bg-white text-slate-500 px-2 py-0.5 rounded-full text-[10px]">0</span>
                 </div>
-                <div id="group-future" class="grid grid-cols-2 md:grid-cols-1 gap-2"></div>
+                <div id="group-future" class="grid grid-cols-2 md:grid-cols-1 gap-2 border-t-2 border-slate-200 pt-2">
+                    </div>
             </div>
+
         </div>
     </main>
+
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-4 right-4 bg-slate-800 text-white w-10 h-10 rounded-full shadow-xl opacity-50 hover:opacity-100 transition-all">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
     <script type="module" src="./app.js"></script>
 </body>
