@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thành Viễn - Điều Hành</title>
+    <title>Điều Hành Thành Viễn</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -24,29 +24,29 @@
                 <i class="fas fa-calendar-check"></i> Nhập Lịch Làm Việc
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div class="md:col-span-1">
+                <div>
                     <label class="block font-bold text-slate-600 mb-1">Tên Khách Hàng</label>
-                    <input type="text" id="inpTen" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="text" id="inpTen" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="md:col-span-1">
+                <div>
                     <label class="block font-bold text-slate-600 mb-1">Số Điện Thoại</label>
-                    <input type="tel" id="inpSdt" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="tel" id="inpSdt" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div class="md:col-span-2">
                     <label class="block font-bold text-slate-600 mb-1">Địa Chỉ</label>
-                    <input type="text" id="inpDiaChi" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="text" id="inpDiaChi" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="md:col-span-1">
+                <div>
                     <label class="block font-bold text-slate-600 mb-1">Người Phụ Trách</label>
-                    <select id="inpTho" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    <select id="inpTho" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="Thành Viễn">Thành Viễn</option>
                         <option value="Thợ 1">Thợ 1</option>
                         <option value="Thợ 2">Thợ 2</option>
                     </select>
                 </div>
-                <div class="md:col-span-1">
+                <div>
                     <label class="block font-bold text-slate-600 mb-1">Công Việc</label>
-                    <select id="inpDichVu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    <select id="inpDichVu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="Vệ sinh máy lạnh">Vệ sinh máy lạnh</option>
                         <option value="Sửa máy lạnh">Sửa máy lạnh</option>
                         <option value="Lắp đặt camera">Lắp đặt camera</option>
@@ -55,9 +55,9 @@
                 </div>
                 <div class="md:col-span-2">
                     <label class="block font-bold text-slate-600 mb-1">Ngày Tháng</label>
-                    <input type="date" id="inpNgay" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="date" id="inpNgay" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <button id="btnSave" class="md:col-span-2 w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg active:scale-95 transition-all mt-2 uppercase tracking-wider">
+                <button id="btnSave" class="md:col-span-2 w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg active:scale-95 transition-all uppercase tracking-wider">
                     Lên Lịch Ngay
                 </button>
             </div>
@@ -66,24 +66,21 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <div class="p-3 bg-blue-600 text-white font-bold text-xs uppercase flex justify-between">
-                    <span>Hôm Nay</span>
-                    <span id="count-today">0</span>
+                    <span>Hôm Nay</span> <span id="count-today">0</span>
                 </div>
                 <div id="group-today" class="p-2 grid grid-cols-2 md:grid-cols-1 gap-2"></div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <div class="p-3 bg-slate-700 text-white font-bold text-xs uppercase flex justify-between">
-                    <span>Ngày Mai</span>
-                    <span id="count-tomorrow">0</span>
+                    <span>Ngày Mai</span> <span id="count-tomorrow">0</span>
                 </div>
                 <div id="group-tomorrow" class="p-2 grid grid-cols-2 md:grid-cols-1 gap-2 border-t"></div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <div class="p-3 bg-slate-500 text-white font-bold text-xs uppercase flex justify-between">
-                    <span>Sắp Tới</span>
-                    <span id="count-future">0</span>
+                    <span>Sắp Tới</span> <span id="count-future">0</span>
                 </div>
                 <div id="group-future" class="p-2 grid grid-cols-2 md:grid-cols-1 gap-2 border-t"></div>
             </div>
