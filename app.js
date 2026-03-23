@@ -71,25 +71,32 @@ function renderCard(item) {
     </div>`;
 }
 
+// Tìm đoạn này trong file app.js và cập nhật:
 document.getElementById('btnSave').onclick = async () => {
     const btn = document.getElementById('btnSave');
     const newData = {
         ten_khach: document.getElementById('inpTen').value.trim(),
         so_dien_thoai: document.getElementById('inpSdt').value.trim(),
         dia_chi: document.getElementById('inpDiaChi').value.trim(),
-        nguoi_phu_trach: document.getElementById('inpTho').value,
+        khu_vuc: document.getElementById('inpKhuVuc').value, // <--- CỘT MỚI
         loai_dich_vu: document.getElementById('inpDichVu').value,
+        nguoi_phu_trach: document.getElementById('inpTho').value,
         ngay_thuc_hien: document.getElementById('inpNgay').value,
+        ghi_chu_cong_viec: document.getElementById('inpGhiChu').value.trim(), // <--- CỘT MỚI
         trang_thai: 'CTY'
     };
 
-    if(!newData.ten_khach || !newData.so_dien_thoai) return alert("Nhập Tên và SĐT!");
+    if(!newData.ten_khach) return alert("Vui lòng nhập tên khách hàng!");
 
     btn.disabled = true;
     const { error } = await db.insert(newData);
+    
     if (!error) {
-        alert("Đã lưu lịch!");
-        ["inpTen", "inpSdt", "inpDiaChi"].forEach(id => document.getElementById(id).value = '');
+        alert("Đã lưu lịch thành công!");
+        // Xóa sạch các ô sau khi lưu (trừ ngày và thợ để nhập tiếp cho nhanh)
+        ["inpTen", "inpSdt", "inpDiaChi", "inpGhiChu"].forEach(id => {
+            document.getElementById(id).value = '';
+        });
         loadData();
     }
     btn.disabled = false;
