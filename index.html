@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thành Viễn CRM</title>
+    <title>Hệ Thống Thành Viễn CRM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        /* Style cho Task đã hoàn thành */
         .task-done { background-color: #ecfdf5 !important; border: 1px solid #6ee7b7 !important; opacity: 0.9; }
     </style>
 </head>
@@ -16,63 +17,47 @@
 
     <header class="bg-blue-900 text-white p-3 shadow-md sticky top-0 z-50">
         <div class="max-w-full px-4 flex justify-between items-center">
-            <h1 class="font-bold uppercase text-xs tracking-widest">Hệ Thống Thành Viễn</h1>
+            <h1 class="font-bold uppercase text-xs tracking-widest">ĐIỀU HÀNH THÀNH VIỄN</h1>
             <div id="clock" class="text-[10px] font-mono"></div>
         </div>
     </header>
 
     <main class="max-w-full px-4 mt-4">
+        
         <section class="bg-white rounded-xl shadow-md p-4 mb-6 border border-slate-200">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
                 
                 <div class="lg:col-span-6 grid grid-cols-1 md:grid-cols-4 gap-2 border-r-0 lg:border-r border-slate-200 pr-0 lg:pr-4">
                     <h3 class="md:col-span-4 text-[10px] font-bold text-blue-600 uppercase mb-1">1. Thông tin khách hàng</h3>
-                    <div>
-                        <input type="text" id="inpTen" placeholder="Tên khách" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <input type="tel" id="inpSdt" placeholder="Số điện thoại" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <input type="text" id="inpDiaChi" placeholder="Địa chỉ chi tiết" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <select id="inpKhuVuc" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
-                            <option value="Gò Vấp">Gò Vấp</option>
-                            <option value="Quận 12">Quận 12</option>
-                            <option value="Tân Bình">Tân Bình</option>
-                            <option value="Khác">Khu vực khác</option>
-                        </select>
-                    </div>
+                    <input type="text" id="inpTen" placeholder="Tên khách" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
+                    <input type="tel" id="inpSdt" placeholder="Số điện thoại" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
+                    <input type="text" id="inpDiaChi" placeholder="Địa chỉ chi tiết" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
+                    <select id="inpKhuVuc" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
+                        <option value="Gò Vấp">Gò Vấp</option>
+                        <option value="Quận 12">Quận 12</option>
+                        <option value="Tân Bình">Tân Bình</option>
+                        <option value="Phú Nhuận">Phú Nhuận</option>
+                        <option value="Khác">Khu vực khác</option>
+                    </select>
                 </div>
 
                 <div class="lg:col-span-6 grid grid-cols-1 md:grid-cols-5 gap-2">
                     <h3 class="md:col-span-5 text-[10px] font-bold text-orange-600 uppercase mb-1">2. Chi tiết công việc</h3>
-                    <div>
-                        <select id="inpDichVu" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
-                            <option value="Vệ sinh máy lạnh">Vệ sinh</option>
-                            <option value="Sửa máy lạnh">Sửa chữa</option>
-                            <option value="Lắp đặt">Lắp đặt</option>
-                        </select>
-                    </div>
-                    <div>
-                        <select id="inpTho" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
-                            <option value="Thành Viễn">Thành Viễn</option>
-                            <option value="Thợ 1">Thợ 1</option>
-                            <option value="Thợ 2">Thợ 2</option>
-                        </select>
-                    </div>
-                    <div>
-                        <input type="date" id="inpNgay" class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
-                    </div>
-                    <div>
-                        <input type="text" id="inpGhiChu" placeholder="Ghi chú..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <button id="btnSave" class="w-full bg-blue-700 hover:bg-blue-800 text-white p-2 rounded font-bold text-sm uppercase transition-all shadow-lg">Lưu</button>
-                    </div>
+                    <select id="inpDichVu" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
+                        <option value="Vệ sinh máy lạnh">Vệ sinh</option>
+                        <option value="Sửa máy lạnh">Sửa chữa</option>
+                        <option value="Lắp đặt">Lắp đặt</option>
+                        <option value="Sửa máy giặt">Máy giặt</option>
+                    </select>
+                    <select id="inpTho" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
+                        <option value="Thành Viễn">Thành Viễn</option>
+                        <option value="Thợ 1">Thợ 1</option>
+                        <option value="Thợ 2">Thợ 2</option>
+                    </select>
+                    <input type="date" id="inpNgay" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
+                    <input type="text" id="inpGhiChu" placeholder="Ghi chú thêm..." class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:border-blue-500">
+                    <button id="btnSave" class="bg-blue-700 hover:bg-blue-800 text-white p-2 rounded font-bold text-sm uppercase transition-all shadow-lg">Lưu</button>
                 </div>
-
             </div>
         </section>
 
@@ -83,12 +68,14 @@
                 </div>
                 <div id="group-today" class="grid grid-cols-2 md:grid-cols-1 gap-2"></div>
             </div>
+
             <div class="space-y-2">
                 <div class="bg-slate-700 p-2 text-white text-[11px] font-bold uppercase rounded-t-lg flex justify-between">
                     <span>Ngày mai</span> <span id="count-tomorrow">0</span>
                 </div>
                 <div id="group-tomorrow" class="grid grid-cols-2 md:grid-cols-1 gap-2"></div>
             </div>
+
             <div class="space-y-2">
                 <div class="bg-slate-500 p-2 text-white text-[11px] font-bold uppercase rounded-t-lg flex justify-between">
                     <span>Sắp tới</span> <span id="count-future">0</span>
