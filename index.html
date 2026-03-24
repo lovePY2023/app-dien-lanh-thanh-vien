@@ -1,72 +1,55 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Điều Hành Thành Viễn - ERP v3.0</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow-x: hidden; }
-        .task-done { background-color: #ecfdf5 !important; border: 1px solid #6ee7b7 !important; }
-        .task-done h4 { text-decoration: line-through; color: #059669; opacity: 0.7; }
-        .scroll-container::-webkit-scrollbar { height: 8px; }
-        .scroll-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    </style>
-</head>
-<body class="pb-10">
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 flex justify-around p-2 z-[100] shadow-lg">
+    <button onclick="switchTab('pos')" class="flex flex-col items-center text-blue-600">
+        <i class="fas fa-shopping-cart text-xl"></i>
+        <span class="text-[10px] font-bold uppercase mt-1">Bán Hàng</span>
+    </button>
+    <button onclick="switchTab('schedule')" class="flex flex-col items-center text-slate-400" id="btn-nav-schedule">
+        <i class="fas fa-calendar-alt text-xl"></i>
+        <span class="text-[10px] font-bold uppercase mt-1">Lịch Làm Việc</span>
+    </button>
+</nav>
 
-    <header class="bg-blue-900 text-white p-3 shadow-md sticky top-0 z-50">
-        <div class="max-w-full px-4 flex justify-between items-center">
-            <h1 class="font-bold uppercase text-xs tracking-widest flex items-center gap-2">
-                <i class="fas fa-snowflake"></i> THÀNH VIỄN CRM
-            </h1>
-            <div id="clock" class="text-[10px] font-mono bg-blue-800 px-3 py-1 rounded-full border border-blue-700"></div>
-        </div>
-    </header>
-
-    <main class="max-w-full px-4 mt-4">
-        
-        <section class="bg-white rounded-xl shadow-md p-4 mb-6 border border-slate-200">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
-                <div class="lg:col-span-6 grid grid-cols-1 md:grid-cols-4 gap-2 border-r-0 lg:border-r border-slate-100 pr-0 lg:pr-4">
-                    <h3 class="md:col-span-4 text-[10px] font-bold text-blue-600 uppercase mb-1">1. Khách hàng</h3>
-                    <input type="text" id="inpTen" placeholder="Tên khách" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-1 focus:ring-blue-500">
-                    <input type="tel" id="inpSdt" placeholder="SĐT" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-1 focus:ring-blue-500">
-                    <input type="text" id="inpDiaChi" placeholder="Địa chỉ" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-1 focus:ring-blue-500">
-                    <select id="inpKhuVuc" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
+<main class="max-w-full px-4 mt-4 pb-20">
+    
+    <section id="tab-pos" class="tab-content">
+        <h2 class="text-blue-800 font-bold mb-4 uppercase text-sm"><i class="fas fa-plus-circle mr-2"></i>Tạo Dịch Vụ / Bán Hàng</h2>
+        <div class="bg-white rounded-xl shadow-md p-6 border border-slate-200">
+            <div class="grid grid-cols-1 gap-4">
+                <input type="text" id="inpTen" placeholder="Tên khách hàng" class="p-3 bg-slate-50 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="tel" id="inpSdt" placeholder="Số điện thoại" class="p-3 bg-slate-50 border rounded-lg outline-none">
+                <input type="text" id="inpDiaChi" placeholder="Địa chỉ lắp đặt/sửa chữa" class="p-3 bg-slate-50 border rounded-lg outline-none">
+                <div class="grid grid-cols-2 gap-2">
+                    <select id="inpKhuVuc" class="p-3 bg-slate-50 border rounded-lg uppercase text-xs font-bold">
                         <option value="Gò Vấp">Gò Vấp</option>
                         <option value="Quận 12">Quận 12</option>
                         <option value="Tân Bình">Tân Bình</option>
                         <option value="Hóc Môn">Hóc Môn</option>
-                        <option value="Khác">Khác</option>
                     </select>
-                </div>
-                <div class="lg:col-span-6 grid grid-cols-1 md:grid-cols-5 gap-2">
-                    <h3 class="md:col-span-5 text-[10px] font-bold text-orange-600 uppercase mb-1">2. Công việc</h3>
-                    <select id="inpDichVu" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
+                    <select id="inpDichVu" class="p-3 bg-slate-50 border rounded-lg uppercase text-xs font-bold">
                         <option value="Vệ sinh máy lạnh">Vệ sinh</option>
                         <option value="Sửa máy lạnh">Sửa chữa</option>
                         <option value="Lắp đặt máy">Lắp đặt</option>
                     </select>
-                    <select id="inpTho" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <select id="inpTho" class="p-3 bg-slate-50 border rounded-lg uppercase text-xs font-bold">
                         <option value="Thành Viễn">Thành Viễn</option>
                         <option value="Thợ 1">Thợ 1</option>
                         <option value="Thợ 2">Thợ 2</option>
                     </select>
-                    <input type="date" id="inpNgay" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer">
-                    <input type="text" id="inpGhiChu" placeholder="Ghi chú máy..." class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-1 focus:ring-blue-500">
-                    <button id="btnSave" class="bg-blue-700 hover:bg-blue-800 text-white p-2 rounded font-bold text-sm uppercase transition-all shadow-lg active:scale-95">LƯU</button>
+                    <input type="date" id="inpNgay" class="p-3 bg-slate-50 border rounded-lg">
                 </div>
+                <textarea id="inpGhiChu" placeholder="Ghi chú tình trạng máy..." class="p-3 bg-slate-50 border rounded-lg h-20"></textarea>
+                <button id="btnSave" class="bg-blue-700 text-white p-4 rounded-xl font-bold uppercase shadow-lg active:scale-95 transition-all">
+                    XÁC NHẬN TẠO ĐƠN
+                </button>
             </div>
-        </section>
+        </div>
+    </section>
 
+    <section id="tab-schedule" class="tab-content hidden">
         <div id="main-grid-container" class="scroll-container flex flex-nowrap overflow-x-auto gap-4 pb-6 items-start">
             </div>
+    </section>
 
-    </main>
-
-    <script type="module" src="./modules/task.js"></script>
-</body>
-</html>
+</main>
