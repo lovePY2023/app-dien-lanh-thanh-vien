@@ -1,106 +1,28 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Thành Viễn ERP - POS & Schedule</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .hidden { display: none; }
-        .task-done { background-color: #f0fdf4 !important; border: 1px solid #bbf7d0 !important; opacity: 0.7; }
-        .product-card:active { transform: scale(0.95); }
-    </style>
-</head>
-<body class="min-h-screen pb-24">
+<section id="tab-pos" class="tab-content hidden">
+    <div class="bg-white rounded-2xl shadow-sm border p-4 mb-4 grid grid-cols-2 gap-2">
+        <input type="text" id="posTen" placeholder="Tên khách hàng..." class="p-2.5 bg-slate-50 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-orange-500">
+        <input type="tel" id="posSdt" placeholder="SĐT khách..." class="p-2.5 bg-slate-50 border rounded-lg text-sm outline-none">
+    </div>
 
-    <header class="bg-blue-900 text-white p-3 shadow-md sticky top-0 z-50 flex justify-between items-center">
-        <h1 class="font-bold uppercase text-[10px] tracking-widest"><i class="fas fa-snowflake mr-1"></i> THÀNH VIỄN ERP</h1>
-        <div id="clock" class="text-[9px] font-mono bg-blue-800 px-2 py-1 rounded-full"></div>
-    </header>
+    <div class="flex gap-2 overflow-x-auto pb-3 mb-2 scroll-container">
+        <button class="bg-orange-600 text-white px-4 py-1.5 rounded-full text-[10px] font-bold whitespace-nowrap">TẤT CẢ</button>
+        <button class="bg-white text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-bold border whitespace-nowrap shadow-sm">MÁY LẠNH</button>
+        <button class="bg-white text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-bold border whitespace-nowrap shadow-sm">CAMERA</button>
+        <button class="bg-white text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-bold border whitespace-nowrap shadow-sm">LINH KIỆN</button>
+    </div>
 
-    <main class="p-4">
-        <section id="tab-schedule" class="tab-content block">
-            <div class="bg-white rounded-2xl shadow-sm border p-4 mb-6 space-y-3">
-                <h3 class="text-[10px] font-bold text-blue-600 uppercase italic leading-none">Điều phối thợ nhanh</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                    <input type="text" id="inpTen" placeholder="Tên khách" class="p-2.5 bg-slate-50 border rounded-lg text-sm">
-                    <input type="tel" id="inpSdt" placeholder="Số điện thoại" class="p-2.5 bg-slate-50 border rounded-lg text-sm">
-                    <input type="text" id="inpDiaChi" placeholder="Địa chỉ" class="p-2.5 bg-slate-50 border rounded-lg text-sm">
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                    <select id="inpKhuVuc" class="p-2.5 bg-slate-50 border rounded-lg text-xs font-bold uppercase">
-                        <option value="Gò Vấp">Gò Vấp</option>
-                        <option value="Quận 12">Quận 12</option>
-                        <option value="Tân Bình">Tân Bình</option>
-                        <option value="Hóc Môn">Hóc Môn</option>
-                    </select>
-                    <select id="inpDichVu" class="p-2.5 bg-slate-50 border rounded-lg text-xs font-bold uppercase">
-                        <option value="Vệ sinh">Vệ sinh</option>
-                        <option value="Sửa chữa">Sửa chữa</option>
-                        <option value="Lắp đặt">Lắp đặt</option>
-                    </select>
-                    <select id="inpTho" class="p-2.5 bg-slate-50 border rounded-lg text-xs font-bold uppercase">
-                        <option value="Thành Viễn">Thành Viễn</option>
-                        <option value="Thợ 1">Thợ 1</option>
-                        <option value="Thợ 2">Thợ 2</option>
-                    </select>
-                    <input type="date" id="inpNgay" class="p-2.5 bg-slate-50 border rounded-lg text-sm">
-                </div>
-                <button id="btnSave" class="w-full bg-blue-700 text-white p-3 rounded-xl font-bold uppercase text-xs shadow-md">Lưu lịch làm việc</button>
-            </div>
-
-            <div id="main-grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start"></div>
-        </section>
-
-        <section id="tab-pos" class="tab-content hidden">
-            <div class="bg-white rounded-2xl shadow-sm border p-4 mb-4 space-y-3">
-                <h3 class="text-[10px] font-bold text-orange-600 uppercase">Thông tin bán hàng</h3>
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="posTen" placeholder="Tên khách" class="p-2.5 bg-slate-50 border rounded-lg text-sm">
-                    <input type="tel" id="posSdt" placeholder="SĐT" class="p-2.5 bg-slate-50 border rounded-lg text-sm">
-                </div>
-            </div>
-
-            <h3 class="text-[10px] font-bold text-slate-500 uppercase mb-2 ml-1">Danh mục hàng hóa</h3>
-            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                <button onclick="addToCart('Remote ML', 150000)" class="product-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
-                    <i class="fas fa-rss text-orange-500 mb-2"></i>
-                    <p class="text-[10px] font-bold block uppercase">Remote ML</p>
-                    <p class="text-[9px] text-blue-600">150.000đ</p>
-                </button>
-                <button onclick="addToCart('Tụ Quạt', 85000)" class="product-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
-                    <i class="fas fa-bolt text-yellow-500 mb-2"></i>
-                    <p class="text-[10px] font-bold block uppercase">Tụ Quạt</p>
-                    <p class="text-[9px] text-blue-600">85.000đ</p>
-                </button>
-                <button onclick="addToCart('Gas R32/kg', 250000)" class="product-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
-                    <i class="fas fa-gas-pump text-blue-500 mb-2"></i>
-                    <p class="text-[10px] font-bold block uppercase">Gas R32</p>
-                    <p class="text-[9px] text-blue-600">250.000đ</p>
-                </button>
-                <button onclick="addToCart('Đuôi Camera', 25000)" class="product-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
-                    <i class="fas fa-video text-slate-500 mb-2"></i>
-                    <p class="text-[10px] font-bold block uppercase">Đuôi Camera</p>
-                    <p class="text-[9px] text-blue-600">25.000đ</p>
-                </button>
-            </div>
-        </section>
-    </main>
-
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-3 z-[100]">
-        <button id="btn-nav-schedule" onclick="window.switchTab('schedule')" class="flex flex-col items-center text-blue-600">
-            <i class="fas fa-calendar-alt text-xl"></i>
-            <span class="text-[9px] font-bold uppercase mt-1">Lịch Làm Việc</span>
+    <div id="product-grid" class="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-2">
+        <button onclick="addToCart('GAS-R32', 250000)" class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm hover:border-orange-500 transition-all text-left relative overflow-hidden active:scale-95">
+            <span class="absolute top-0 right-0 bg-emerald-500 text-white text-[7px] px-1 rounded-bl">Tồn: 15</span>
+            <p class="text-[9px] font-black text-slate-800 uppercase leading-tight mt-1">GAS R32</p>
+            <p class="text-[8px] text-orange-600 font-bold mt-1">250K</p>
         </button>
-        <button id="btn-nav-pos" onclick="window.switchTab('pos')" class="flex flex-col items-center text-slate-400">
-            <i class="fas fa-shopping-cart text-xl"></i>
-            <span class="text-[9px] font-bold uppercase mt-1">Bán Hàng</span>
-        </button>
-    </nav>
 
-    <script type="module" src="./modules/task.js"></script>
-</body>
-</html>
+        <button onclick="addToCart('REMOTE-DK', 120)" class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm text-left relative active:scale-95">
+            <span class="absolute top-0 right-0 bg-orange-500 text-white text-[7px] px-1 rounded-bl">Tồn: 5</span>
+            <p class="text-[9px] font-black text-slate-800 uppercase leading-tight mt-1">REMOTE</p>
+            <p class="text-[8px] text-orange-600 font-bold mt-1">120K</p>
+        </button>
+        
+        </div>
+</section>
