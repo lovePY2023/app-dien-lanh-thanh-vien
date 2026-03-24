@@ -1,148 +1,107 @@
 import { db } from './supabase.js';
+import { initPOS } from './pos.js'; // <--- Bắc cầu sang POS
 
-// --- TIỆN ÍCH NGÀY THÁNG ---
-// Lấy chuỗi YYYY-MM-DD chuẩn không phụ thuộc múi giờ
-const getIsoDate = (date) => {
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
+// --- QUẢN LÝ CHUYỂN TAB (HÀM QUAN TRỌNG NHẤT) ---
+window.switchTab = (tabName) => {
+    // 1. Ẩn hiện nội dung
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+    const target = document.getElementById(`tab-${tabName}`);
+    if (target) target.classList.remove('hidden');
+
+    // 2. Cập nhật màu sắc Menu Bottom
+    const btnPos = document.getElementById('btn-nav-pos');
+    const btnSchedule = document.getElementById('btn-nav-schedule');
+    
+    if (tabName === 'pos') {
+        btnPos.classList.replace('text-slate-400', 'text-blue-600');
+        btnSchedule.classList.replace('text-blue-600', 'text-slate-400');
+        initPOS(); // Gọi thợ xây POS làm việc
+    } else {
+        btnSchedule.classList.replace('text-slate-400', 'text-blue-600');
+        btnPos.classList.replace('text-blue-600', 'text-slate-400');
+        window.loadData(); // Gọi thợ xây Lịch làm việc
+    }
 };
 
-const todayStr = getIsoDate(new Date());
-
-// Đồng hồ header
-setInterval(() => { 
-    const clock = document.getElementById('clock');
-    if(clock) clock.innerText = new Date().toLocaleTimeString('vi-VN'); 
-}, 1000);
-
-// Gán ngày mặc định cho input
-if(document.getElementById('inpNgay')) document.getElementById('inpNgay').value = todayStr;
-
-// --- HÀM TẢI DỮ LIỆU CHÍNH ---
+// --- QUẢN LÝ LỊCH LÀM VIỆC (GRID 4 CỘT) ---
 window.loadData = async () => {
     const container = document.getElementById('main-grid-container');
-    if(!container) return;
+    if (!container) return;
 
-    container.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400 text-xs italic">Đang tải dữ liệu từ hệ thống...</div>`;
-    
     const { data, error } = await db.fetchAll();
-    
-    if (error) {
-        container.innerHTML = `<div class="col-span-full text-center py-10 text-red-500 text-xs italic">Lỗi kết nối: ${error.message}</div>`;
-        return;
-    }
+    if (error) return;
 
-    // Nhóm task và chuẩn hóa key ngày tháng
-    const grouped = data.reduce((acc, item) => {
-        // Ép ngày từ DB về format YYYY-MM-DD để so sánh chính xác
-        const d = getIsoDate(item.ngay_thuc_hien);
+    const todayStr = new Date().toISOString().split('T')[0];
+    const grouped = (data || []).reduce((acc, item) => {
+        const d = item.ngay_thuc_hien;
         if (!acc[d]) acc[d] = [];
         acc[d].push(item);
         return acc;
     }, {});
 
-    // Tạo mảng 4 ngày hiển thị (Hôm nay + 3 ngày tới)
-    let displayDates = [];
-    for(let i = 0; i < 4; i++) {
+    let html = '';
+    for (let i = 0; i < 4; i++) {
         let d = new Date();
         d.setDate(d.getDate() + i);
-        displayDates.push(getIsoDate(d));
-    }
-
-    // Render ra giao diện
-    container.innerHTML = displayDates.map((date, index) => {
-        const tasks = grouped[date] || [];
-        const isToday = date === todayStr;
-        const isTomorrow = index === 1;
+        const dStr = d.toISOString().split('T')[0];
+        const tasks = grouped[dStr] || [];
         
-        let label = date.split('-').reverse().slice(0,2).join('/'); // DD/MM
-        let colorClass = "bg-slate-600";
-        
-        if (isToday) { label = "HÔM NAY"; colorClass = "bg-blue-700"; }
-        if (isTomorrow) { label = "NGÀY MAI"; colorClass = "bg-slate-700"; }
+        let label = dStr.split('-').reverse().slice(0,2).join('/');
+        let color = i === 0 ? "bg-blue-700" : "bg-slate-600";
+        if (i === 0) label = "HÔM NAY";
 
-        return `
+        html += `
             <div class="flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden min-h-[200px]">
-                <div class="${colorClass} p-2.5 text-white text-[10px] font-bold uppercase flex justify-between items-center">
-                    <span>${label} (${date.split('-').reverse().slice(0,2).join('/')})</span>
-                    <span class="bg-white/20 px-1.5 py-0.5 rounded text-[9px]">${tasks.length} Việc</span>
+                <div class="${color} p-2 text-white text-[10px] font-bold uppercase flex justify-between">
+                    <span>${label}</span>
+                    <span class="bg-white/20 px-1.5 rounded">${tasks.length}</span>
                 </div>
-                <div class="p-2 space-y-2 flex-1">
-                    ${tasks.length > 0 ? tasks.map(i => renderTaskCard(i)).join('') : 
-                    `<div class="h-full flex flex-col items-center justify-center py-10 opacity-20">
-                        <i class="fas fa-calendar-check text-2xl mb-2"></i>
-                        <p class="text-[9px] font-bold">TRỐNG LỊCH</p>
-                    </div>`}
+                <div class="p-2 space-y-2">
+                    ${tasks.map(t => `
+                        <div class="${t.trang_thai === 'XONG' ? 'bg-emerald-50 opacity-60' : 'bg-slate-50'} p-2 rounded-lg border border-slate-100 shadow-sm">
+                            <h4 class="font-bold text-[11px]">${t.ten_khach}</h4>
+                            <p class="text-[9px] text-slate-500 truncate">${t.dia_chi}</p>
+                            <div class="flex justify-between mt-2 pt-1 border-t border-white">
+                                <span class="text-[8px] font-bold text-orange-600">${t.nguoi_phu_trach}</span>
+                                ${t.trang_thai !== 'XONG' ? `<button onclick="window.finishJob('${t.id}')" class="text-[8px] bg-emerald-600 text-white px-2 py-0.5 rounded font-bold">XONG</button>` : '✓'}
+                            </div>
+                        </div>
+                    `).join('') || '<p class="text-[9px] text-slate-300 text-center py-10 italic">Trống</p>'}
                 </div>
-            </div>
-        `;
-    }).join('');
+            </div>`;
+    }
+    container.innerHTML = html;
 };
 
-function renderTaskCard(i) {
-    const isDone = i.trang_thai === 'XONG';
-    return `
-        <div class="${isDone ? 'task-done' : 'bg-slate-50'} p-3 rounded-xl border border-slate-100 shadow-sm transition-all active:scale-[0.98]">
-            <div class="flex justify-between items-start gap-2">
-                <h4 class="font-bold text-[12px] text-slate-800 leading-tight">${i.ten_khach || 'Khách lẻ'}</h4>
-                <span class="text-[7px] font-black text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded uppercase shrink-0">${i.loai_dich_vu || 'DV'}</span>
-            </div>
-            <p class="text-[10px] text-slate-500 mt-1 line-clamp-2"><i class="fas fa-map-marker-alt mr-1 text-[8px]"></i>${i.dia_chi || 'Không có địa chỉ'}</p>
-            <div class="flex justify-between items-center mt-3 pt-2 border-t border-white/50">
-                <span class="text-[9px] font-bold text-orange-600 uppercase">Thợ: ${i.nguoi_phu_trach}</span>
-                ${!isDone ? 
-                    `<button onclick="window.finishJob('${i.id}')" class="text-[9px] bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg font-bold shadow-sm">XONG</button>` : 
-                    `<span class="text-[9px] text-emerald-600 font-bold flex items-center gap-1"><i class="fas fa-check-circle"></i> HOÀN TẤT</span>`
-                }
-            </div>
-        </div>
-    `;
-}
-
-// --- LOGIC LƯU DỮ LIỆU ---
+// --- XỬ LÝ LƯU ĐƠN ---
 const btnSave = document.getElementById('btnSave');
-if(btnSave) {
+if (btnSave) {
     btnSave.onclick = async () => {
-        const nameInp = document.getElementById('inpTen');
-        if(!nameInp.value.trim()) return alert("Vui lòng nhập tên khách!");
-
         const newData = {
-            ten_khach: nameInp.value.trim(),
-            so_dien_thoai: document.getElementById('inpSdt').value.trim(),
-            dia_chi: document.getElementById('inpDiaChi').value.trim(),
+            ten_khach: document.getElementById('inpTen').value,
+            so_dien_thoai: document.getElementById('inpSdt').value,
+            dia_chi: document.getElementById('inpDiaChi').value,
             khu_vuc: document.getElementById('inpKhuVuc').value,
             loai_dich_vu: document.getElementById('inpDichVu').value,
             nguoi_phu_trach: document.getElementById('inpTho').value,
-            ngay_thuc_hien: document.getElementById('inpNgay').value, // YYYY-MM-DD từ input date
+            ngay_thuc_hien: document.getElementById('inpNgay').value,
             trang_thai: 'CTY'
         };
-
         btnSave.disabled = true;
-        btnSave.innerHTML = `<i class="fas fa-spinner animate-spin mr-2"></i> ĐANG LƯU...`;
-
         const { error } = await db.insert(newData);
-        
         if (!error) {
-            // Sau khi lưu thành công, đợi 500ms để DB cập nhật rồi load lại
-            setTimeout(async () => {
-                await window.loadData();
-                ["inpTen", "inpSdt", "inpDiaChi"].forEach(id => document.getElementById(id).value = '');
-                btnSave.disabled = false;
-                btnSave.innerText = "Lưu lịch & Điều phối thợ";
-            }, 500);
-        } else {
-            alert("Lỗi: " + error.message);
-            btnSave.disabled = false;
-            btnSave.innerText = "Lưu lịch & Điều phối thợ";
+            await window.loadData();
+            ["inpTen", "inpSdt", "inpDiaChi"].forEach(id => document.getElementById(id).value = '');
         }
+        btnSave.disabled = false;
     };
 }
 
 window.finishJob = async (id) => {
-    if(!confirm("Xác nhận đã làm xong việc này?")) return;
-    const { error } = await db.updateStatus(id, 'XONG');
-    if(!error) window.loadData();
+    if(!confirm("Xác nhận xong?")) return;
+    await db.from('DATA-KHACH-HANG').update({ trang_thai: 'XONG' }).eq('id', id);
+    window.loadData();
 };
 
-// Khởi chạy
-window.loadData();
+// Khởi chạy khi vào trang
+document.addEventListener('DOMContentLoaded', () => { window.loadData(); });
