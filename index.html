@@ -3,96 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Thành Viễn ERP - Professional</title>
+    <title>Thành Viễn ERP - Quản Lý Kho & Lịch</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
-        
-        .tab-content { transition: opacity 0.2s ease-in-out; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .tab-content { transition: all 0.2s ease; }
         .hidden { display: none; }
-        
-        /* Tùy chỉnh thanh cuộn ngang cho danh mục */
         .scroll-container::-webkit-scrollbar { display: none; }
         .scroll-container { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Card công việc đã xong */
-        .task-done { background-color: #f0fdf4 !important; border: 1px solid #bbf7d0 !important; opacity: 0.7; }
-        .task-done h4 { text-decoration: line-through; color: #166534; }
-
-        /* Hiệu ứng nút bấm POS */
-        .product-btn:active { transform: scale(0.92); background-color: #fff7ed; border-color: #fb923c; }
         
-        /* Menu cố định bên dưới */
-        nav { box-shadow: 0 -4px 12px rgba(0,0,0,0.05); }
+        /* Hiệu ứng Card công việc */
+        .task-done { background-color: #f0fdf4 !important; border-left: 4px solid #10b981 !important; opacity: 0.7; }
+        .task-pending { border-left: 4px solid #3b82f6; }
+
+        /* Nút hàng hóa POS */
+        .product-card:active { transform: scale(0.95); }
     </style>
 </head>
-<body class="min-h-screen pb-24">
+<body class="pb-24">
 
-    <header class="bg-blue-900 text-white p-3 shadow-md sticky top-0 z-[60] flex justify-between items-center">
+    <header class="bg-slate-900 text-white p-4 sticky top-0 z-50 flex justify-between items-center shadow-lg">
         <div class="flex items-center gap-2">
-            <i class="fas fa-snowflake text-blue-300 animate-pulse"></i>
-            <h1 class="font-bold uppercase text-[10px] tracking-widest">Thành Viễn ERP</h1>
+            <div class="bg-orange-500 p-1.5 rounded-lg">
+                <i class="fas fa-tools text-white text-xs"></i>
+            </div>
+            <h1 class="font-black uppercase text-xs tracking-tighter">Thành Viễn Professional</h1>
         </div>
-        <div id="clock" class="text-[9px] font-mono bg-blue-800 px-2 py-1 rounded-full border border-blue-700"></div>
+        <div id="clock" class="text-[10px] font-mono bg-white/10 px-3 py-1 rounded-full border border-white/20"></div>
     </header>
 
-    <main class="p-4 max-w-[1400px] mx-auto">
-        
+    <main class="p-4 max-w-5xl mx-auto">
+
         <section id="tab-schedule" class="tab-content block">
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="text-[10px] font-bold text-blue-600 uppercase tracking-tighter italic">Điều phối kỹ thuật</h3>
-                    <span class="text-[8px] text-slate-400">Nhập đơn nhanh tại đây</span>
+                <h3 class="text-[10px] font-bold text-blue-600 uppercase mb-3 italic">Điều phối kỹ thuật</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
+                    <input type="text" id="inpTen" placeholder="Tên khách hàng" class="p-3 bg-slate-50 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="tel" id="inpSdt" placeholder="Số điện thoại" class="p-3 bg-slate-50 border rounded-xl text-sm outline-none">
                 </div>
+                <input type="text" id="inpDiaChi" placeholder="Địa chỉ chi tiết" class="w-full p-3 bg-slate-50 border rounded-xl text-sm outline-none mb-2">
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
-                    <input type="text" id="inpTen" placeholder="Tên khách hàng" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                    <input type="tel" id="inpSdt" placeholder="Số điện thoại" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none">
-                    <input type="text" id="inpDiaChi" placeholder="Địa chỉ lắp đặt/sửa chữa" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none">
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-                    <select id="inpKhuVuc" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold uppercase cursor-pointer">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+                    <select id="inpKhuVuc" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold uppercase">
                         <option value="Gò Vấp">Gò Vấp</option>
                         <option value="Quận 12">Quận 12</option>
                         <option value="Tân Bình">Tân Bình</option>
                         <option value="Hóc Môn">Hóc Môn</option>
                     </select>
-                    <select id="inpDichVu" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold uppercase cursor-pointer">
+                    <select id="inpDichVu" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold uppercase">
                         <option value="Vệ sinh">Vệ sinh</option>
                         <option value="Sửa chữa">Sửa chữa</option>
                         <option value="Lắp đặt">Lắp đặt</option>
-                        <option value="Bán hàng">Bán hàng</option>
                     </select>
-                    <select id="inpTho" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold uppercase cursor-pointer">
+                    <select id="inpTho" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold uppercase">
                         <option value="Thành Viễn">Thành Viễn</option>
                         <option value="Thợ 1">Thợ 1</option>
                         <option value="Thợ 2">Thợ 2</option>
                     </select>
-                    <input type="date" id="inpNgay" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm cursor-pointer">
+                    <input type="date" id="inpNgay" class="p-3 bg-slate-50 border rounded-xl text-sm">
                 </div>
 
-                <button id="btnSave" class="w-full bg-blue-700 hover:bg-blue-800 text-white p-3 rounded-xl font-bold uppercase text-[11px] shadow-lg shadow-blue-100 transition-all active:scale-95">
-                    Lưu lịch & Điều phối thợ
+                <button id="btnSave" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl font-black uppercase text-xs shadow-lg active:scale-[0.98] transition-all">
+                    LƯU LỊCH LÀM VIỆC
                 </button>
             </div>
 
-            <div id="main-grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
+            <div id="main-grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 </div>
         </section>
 
         <section id="tab-pos" class="tab-content hidden">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-4 grid grid-cols-2 gap-3">
-                <div class="space-y-1">
-                    <label class="text-[8px] font-bold text-slate-400 uppercase ml-1">Khách hàng</label>
-                    <input type="text" id="posTen" placeholder="Tên khách..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500">
+            <div class="bg-white rounded-2xl shadow-sm border p-4 mb-4 grid grid-cols-2 gap-3">
+                <input type="text" id="posTen" placeholder="Khách mua hàng..." class="p-3 bg-slate-50 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500">
+                <input type="tel" id="posSdt" placeholder="SĐT khách..." class="p-3 bg-slate-50 border rounded-xl text-sm outline-none">
+            </div>
+
+            <div class="flex justify-between items-center mb-4 px-1">
+                <h3 class="text-[10px] font-bold text-orange-600 uppercase italic">Danh mục hàng hóa</h3>
+                <button onclick="window.toggleAddProduct()" class="bg-slate-800 text-white text-[9px] px-3 py-2 rounded-lg font-bold shadow-sm flex items-center gap-1">
+                    <i class="fas fa-plus-circle"></i> THÊM MÃ HÀNG
+                </button>
+            </div>
+
+            <div id="form-add-product" class="hidden bg-orange-50 p-4 rounded-2xl border border-orange-200 mb-6 shadow-md">
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <input type="text" id="newMa" placeholder="Mã hàng (VD: GAS32)" class="p-2.5 text-xs rounded-lg border outline-none">
+                    <input type="text" id="newTen" placeholder="Tên hàng hóa" class="p-2.5 text-xs rounded-lg border outline-none">
+                    <input type="number" id="newGiaNhap" placeholder="Giá nhập (Gốc)" class="p-2.5 text-xs rounded-lg border outline-none">
+                    <input type="number" id="newGiaBan" placeholder="Giá bán lẻ" class="p-2.5 text-xs rounded-lg border outline-none">
+                    <input type="number" id="newTon" placeholder="Tồn kho ban đầu" class="p-2.5 text-xs rounded-lg border outline-none">
+                    <select id="newCat" class="p-2.5 text-xs rounded-lg border font-bold uppercase">
+                        <option value="VẬT TƯ">VẬT TƯ</option>
+                        <option value="MÁY LẠNH">MÁY LẠNH</option>
+                        <option value="CAMERA">CAMERA</option>
+                        <option value="LINH KIỆN">LINH KIỆN</option>
+                    </select>
                 </div>
-                <div class="space-y-1">
-                    <label class="text-[8px] font-bold text-slate-400 uppercase ml-1">Số điện thoại</label>
-                    <input type="tel" id="posSdt" placeholder="SĐT..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none">
+                <div class="flex gap-2">
+                    <button onclick="window.saveNewProduct()" class="flex-1 bg-orange-600 text-white py-3 rounded-xl font-bold text-[10px] shadow-md active:scale-95">XÁC NHẬN LƯU</button>
+                    <button onclick="window.toggleAddProduct()" class="px-6 bg-slate-300 text-slate-700 py-3 rounded-xl font-bold text-[10px]">HỦY</button>
                 </div>
             </div>
 
@@ -105,13 +116,13 @@
 
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 flex justify-around p-3 z-[100]">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 flex justify-around p-3 z-[100] shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
         <button id="btn-nav-schedule" onclick="window.switchTab('schedule')" class="flex flex-col items-center text-blue-600 transition-all">
-            <i class="fas fa-calendar-alt text-xl"></i>
+            <i class="fas fa-calendar-day text-xl"></i>
             <span class="text-[9px] font-bold uppercase mt-1">Lịch Làm Việc</span>
         </button>
         <button id="btn-nav-pos" onclick="window.switchTab('pos')" class="flex flex-col items-center text-slate-400 transition-all">
-            <i class="fas fa-shopping-basket text-xl"></i>
+            <i class="fas fa-store text-xl"></i>
             <span class="text-[9px] font-bold uppercase mt-1">Bán Hàng</span>
         </button>
     </nav>
