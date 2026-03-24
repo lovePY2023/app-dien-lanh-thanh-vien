@@ -1,18 +1,21 @@
 import { db } from './supabase.js';
 
 // ==========================================
-// [1] ĐỒNG HỒ & KHỞI TẠO NGÀY
+// [1] QUẢN LÝ GIAO DIỆN & TÁC VỤ ĐẦU
 // ==========================================
+
+// Đồng hồ hiển thị góc màn hình
 setInterval(() => { 
     const clock = document.getElementById('clock');
     if(clock) clock.innerText = new Date().toLocaleString('vi-VN'); 
 }, 1000);
 
+// Thiết lập ngày mặc định cho Input là Hôm nay
 const getTodayStr = () => new Date().toLocaleDateString('sv-SE');
 const inpNgay = document.getElementById('inpNgay');
 if(inpNgay) inpNgay.value = getTodayStr();
 
-// Hàm lấy Thứ và Ngày Tháng Việt Nam
+// Hàm định dạng Thứ - Ngày/Tháng kiểu Việt Nam
 function formatVN(dateStr) {
     const d = new Date(dateStr);
     const days = ["Chủ Nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
@@ -22,9 +25,37 @@ function formatVN(dateStr) {
 }
 
 // ==========================================
-// [2] TẢI VÀ CHIA CỘT DỮ LIỆU (4 CỘT PC)
+// [2] LOGIC CHUYỂN TAB (BÁN HÀNG <-> LỊCH)
+// ==========================================
+window.switchTab = (tabName) => {
+    const tabs = document.querySelectorAll('.tab-content');
+    const navBtns = document.querySelectorAll('nav button');
+
+    // Ẩn tất cả nội dung và reset màu nút
+    tabs.forEach(t => t.classList.add('hidden'));
+    navBtns.forEach(b => {
+        b.classList.remove('text-blue-600');
+        b.classList.add('text-slate-400');
+    });
+
+    // Hiện Tab được chọn và đổi màu nút tương ứng
+    if (tabName === 'pos') {
+        document.getElementById('tab-pos').classList.remove('hidden');
+        document.getElementById('btn-nav-pos').classList.replace('text-slate-400', 'text-blue-600');
+    } else {
+        document.getElementById('tab-schedule').classList.remove('hidden');
+        document.getElementById('btn-nav-schedule').classList.replace('text-slate-400', 'text-blue-600');
+        loadData(); // Tự động làm mới lịch khi nhấn vào tab Lịch làm việc
+    }
+};
+
+// ==========================================
+// [3] TẢI DỮ LIỆU & HIỂN THỊ 4 CỘT PC
 // ==========================================
 export async function loadData() {
+    const container = document.getElementById('main-grid-container');
+    if(!container) return;
+
     const { data, error } = await db.fetchAll();
     if (error) return;
 
@@ -32,7 +63,7 @@ export async function loadData() {
     const tomDate = new Date(); tomDate.setDate(tomDate.getDate() + 1);
     const tomorrowStr = tomDate.toLocaleDateString('sv-SE');
 
-    // Gom nhóm task theo từng ngày
+    // Nhóm task theo ngày
     const grouped = data.reduce((acc, item) => {
         const d = item.ngay_thuc_hien;
         if (!acc[d]) acc[d] = [];
@@ -40,7 +71,7 @@ export async function loadData() {
         return acc;
     }, {});
 
-    // Luôn hiển thị cột Hôm nay và Ngày mai dù trống
+    // Đảm bảo Hôm nay và Ngày mai luôn có cột
     if (!grouped[todayStr]) grouped[todayStr] = [];
     if (!grouped[tomorrowStr]) grouped[tomorrowStr] = [];
 
@@ -48,7 +79,7 @@ export async function loadData() {
 
     let finalHtml = '';
     sortedDates.forEach(date => {
-        if (date < todayStr) return; // Ẩn các ngày đã qua
+        if (date < todayStr) return; // Không hiện lịch cũ
 
         const tasks = grouped[date];
         let titlePrefix = formatVN(date);
@@ -59,7 +90,7 @@ export async function loadData() {
         const colorClass = (date === todayStr) ? "bg-blue-700" : (date === tomorrowStr ? "bg-slate-700" : "bg-slate-500");
 
         finalHtml += `
-            <div class="flex-shrink-0 w-[300px] md:w-[320px] lg:w-[350px] space-y-3">
+            <div class="flex-shrink-0 w-[300px] md:w-[320px] lg:w-[350px] space-y-3 pb-10">
                 <div class="${colorClass} p-3 text-white text-[11px] font-bold uppercase rounded-t-xl flex justify-between items-center shadow-md">
                     <span>${titlePrefix}</span>
                     <span class="bg-white text-slate-800 px-2 py-0.5 rounded-full text-[10px]">${tasks.length} VIỆC</span>
@@ -71,8 +102,7 @@ export async function loadData() {
         `;
     });
 
-    const container = document.getElementById('main-grid-container');
-    if(container) container.innerHTML = finalHtml;
+    container.innerHTML = finalHtml;
 }
 
 function renderCard(item) {
@@ -105,7 +135,7 @@ function renderCard(item) {
 }
 
 // ==========================================
-// [3] LƯU VÀ HOÀN THÀNH
+// [4] LƯU ĐƠN HÀNG (POS)
 // ==========================================
 const btnSave = document.getElementById('btnSave');
 if(btnSave) {
@@ -121,24 +151,40 @@ if(btnSave) {
             ghi_chu_cong_viec: document.getElementById('inpGhiChu').value.trim(),
             trang_thai: 'CTY'
         };
-        if(!newData.ten_khach) return alert("Nhập tên khách!");
+
+        if(!newData.ten_khach) return alert("Nhập tên khách hàng!");
+
+        btnSave.innerText = "ĐANG LƯU...";
         btnSave.disabled = true;
+
         const { error } = await db.insert(newData);
         if (!error) { 
-            await loadData(); 
-            ["inpTen", "inpSdt", "inpDiaChi", "inpGhiChu"].forEach(id => document.getElementById(id).value = ''); 
+            alert("Tạo đơn thành công!");
+            // Xóa form
+            ["inpTen", "inpSdt", "inpDiaChi", "inpGhiChu"].forEach(id => document.getElementById(id).value = '');
+            // Tự động chuyển sang Tab Lịch để xem
+            window.switchTab('schedule');
+        } else {
+            alert("Lỗi khi lưu: " + error.message);
         }
+        
+        btnSave.innerText = "XÁC NHẬN TẠO ĐƠN";
         btnSave.disabled = false;
     };
 }
 
+// Xử lý nút HOÀN THÀNH trên Card
 window.finishJob = async (id) => {
     const n = new Date();
     const timeText = `${n.getHours()}:${n.getMinutes().toString().padStart(2,'0')} (${n.getDate()}/${n.getMonth()+1})`;
-    if(confirm("Xác nhận hoàn thành việc này?")) {
-        const { error } = await db.from('DATA-KHACH-HANG').update({ trang_thai: 'XONG', ghi_chu_cong_viec: timeText }).eq('id', id);
+    if(confirm("Xác nhận thợ đã làm xong việc này?")) {
+        const { error } = await db.from('DATA-KHACH-HANG').update({ 
+            trang_thai: 'XONG', 
+            ghi_chu_cong_viec: "Hoàn tất lúc " + timeText 
+        }).eq('id', id);
         if(!error) await loadData();
     }
 };
 
+// Mặc định khi tải trang sẽ chạy load dữ liệu
 loadData();
