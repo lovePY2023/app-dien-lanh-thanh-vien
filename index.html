@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Điều Hành Thành Viễn - Quản Lý Lịch Trình</title>
+    <title>Điều Hành Thành Viễn - ERP v3.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -11,10 +11,8 @@
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow-x: hidden; }
         .task-done { background-color: #ecfdf5 !important; border: 1px solid #6ee7b7 !important; }
         .task-done h4 { text-decoration: line-through; color: #059669; opacity: 0.7; }
-        /* Thanh cuộn ngang mượt mà cho danh sách ngày */
         .scroll-container::-webkit-scrollbar { height: 8px; }
         .scroll-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .scroll-container::-webkit-scrollbar-track { background: #f1f5f9; }
     </style>
 </head>
 <body class="pb-10">
@@ -37,7 +35,7 @@
                     <input type="text" id="inpTen" placeholder="Tên khách" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-1 focus:ring-blue-500">
                     <input type="tel" id="inpSdt" placeholder="SĐT" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-1 focus:ring-blue-500">
                     <input type="text" id="inpDiaChi" placeholder="Địa chỉ" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-1 focus:ring-blue-500">
-                    <select id="inpKhuVuc" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer">
+                    <select id="inpKhuVuc" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
                         <option value="Gò Vấp">Gò Vấp</option>
                         <option value="Quận 12">Quận 12</option>
                         <option value="Tân Bình">Tân Bình</option>
@@ -47,18 +45,18 @@
                 </div>
                 <div class="lg:col-span-6 grid grid-cols-1 md:grid-cols-5 gap-2">
                     <h3 class="md:col-span-5 text-[10px] font-bold text-orange-600 uppercase mb-1">2. Công việc</h3>
-                    <select id="inpDichVu" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer">
+                    <select id="inpDichVu" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
                         <option value="Vệ sinh máy lạnh">Vệ sinh</option>
                         <option value="Sửa máy lạnh">Sửa chữa</option>
                         <option value="Lắp đặt máy">Lắp đặt</option>
                     </select>
-                    <select id="inpTho" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer">
+                    <select id="inpTho" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none">
                         <option value="Thành Viễn">Thành Viễn</option>
                         <option value="Thợ 1">Thợ 1</option>
                         <option value="Thợ 2">Thợ 2</option>
                     </select>
                     <input type="date" id="inpNgay" class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none cursor-pointer">
-                    <input type="text" id="inpGhiChu" placeholder="Ghi chú..." class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-1 focus:ring-blue-500">
+                    <input type="text" id="inpGhiChu" placeholder="Ghi chú máy..." class="p-2 bg-slate-50 border border-slate-200 rounded text-sm outline-none focus:ring-1 focus:ring-blue-500">
                     <button id="btnSave" class="bg-blue-700 hover:bg-blue-800 text-white p-2 rounded font-bold text-sm uppercase transition-all shadow-lg active:scale-95">LƯU</button>
                 </div>
             </div>
@@ -69,6 +67,6 @@
 
     </main>
 
-    <script type="module" src="./app.js"></script>
+    <script type="module" src="./modules/task.js"></script>
 </body>
 </html>
